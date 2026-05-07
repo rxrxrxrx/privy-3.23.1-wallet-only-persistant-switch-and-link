@@ -21,7 +21,7 @@
     "@solana/spl-token": "^0.4.13",
     "@solana/web3.js": "^1.98.2",
     "lucide-react": "^0.513.0",
-    "next": "15.3.3",
+    "next": "15.5.16",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -31,7 +31,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "9.34.0",
-    "eslint-config-next": "15.5.2",
+    "eslint-config-next": "15.5.16",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
