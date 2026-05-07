@@ -1,6 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# ---- Dependencies ----
 /node_modules
 /.pnp
 .pnp.*
@@ -10,32 +10,60 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-
-# next.js
+# ---- Build output ----
 /.next/
 /out/
-
-# production
 /build
+/dist
+*.tsbuildinfo
+next-env.d.ts
 
-# misc
-.DS_Store
-*.pem
+# ---- Test / coverage ----
+/coverage
+/.nyc_output
 
-# debug
+# ---- Env (NEVER commit secrets) ----
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# ---- Logs ----
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+*.log
+logs
 
-# env files (can opt-in for committing if needed)
-.env*
+# ---- OS / editor cruft ----
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
 
-# vercel
+# ---- AI / agent local state ----
+.claude/
+.agents/
+.aider*
+skills-lock.json
+
+# ---- Vercel ----
 .vercel
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# ---- Sensitive ----
+*.pem
+*.key
+*.cert
+secrets/
+
+# ---- Privy local artifacts ----
+.privy/
+.next-localstorage
+.localstorage
