@@ -23,9 +23,18 @@ const wsOrigin = (() => {
 
 // CSP merged from Privy's docs (https://docs.privy.io/security/implementation-guide/content-security-policy)
 // + Solana wallet-standard + WalletConnect + analytics + Cloudflare Turnstile.
+//
+// NOTE on `script-src 'unsafe-inline'`: Next.js 15 App Router injects inline
+// `<script>` tags for RSC hydration (server-rendered data → client). Without
+// `'unsafe-inline'`, the page is blank in production. The clean migration is
+// nonce-based CSP via middleware (see Next.js docs:
+// https://nextjs.org/docs/app/guides/content-security-policy) — replace
+// `'unsafe-inline'` with `'nonce-{nonce}' 'strict-dynamic'` and inject the
+// nonce per-request from `middleware.ts`. Privy itself does NOT need
+// `'unsafe-inline'` (per their CSP docs); this is purely for Next.js.
 const csp = [
   "default-src 'self'",
-  "script-src 'self' https://challenges.cloudflare.com",
+  "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
   // Tailwind v4 + Next.js inject styles inline.
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
