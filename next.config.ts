@@ -85,6 +85,26 @@ const nextConfig: NextConfig = {
   webpack: (config) => {
     config.externals["@solana/web3.js"] = "commonjs @solana/web3.js";
     config.externals["@solana/spl-token"] = "commonjs @solana/spl-token";
+
+    // Silence harmless "Module not found" warnings for optional peer deps
+    // that the Privy SDK declares but we never use (Farcaster mini-app,
+    // Abstract Global Wallet, permissionless smart accounts). Listed as
+    // peerOptional in @privy-io/react-auth's package.json.
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings ?? []),
+      {
+        module: /@privy-io[\\/]react-auth/,
+        message: /Can't resolve '@farcaster\/mini-app-solana'/,
+      },
+      {
+        module: /@privy-io[\\/]react-auth/,
+        message: /Can't resolve '@abstract-foundation\/agw-client'/,
+      },
+      {
+        module: /@privy-io[\\/]react-auth/,
+        message: /Can't resolve 'permissionless/,
+      },
+    ];
     return config;
   },
   async headers() {

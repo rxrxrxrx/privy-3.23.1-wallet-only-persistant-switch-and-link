@@ -23,12 +23,11 @@ next-env.d.ts
 /.nyc_output
 
 # ---- Env (NEVER commit secrets) ----
-.env
-.env.local
-.env.*.local
-.env.development.local
-.env.production.local
-.env.test.local
+# Catch-all for any .env variant (incl. backups like ".env copy.local")
+.env*
+# Allow only the example template
+!.env.example
+!.env.local.example
 
 # ---- Logs ----
 npm-debug.log*
