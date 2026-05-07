@@ -25,6 +25,7 @@ import { FileSignature, MessageSquare, Send, Wallet } from "lucide-react";
 import { useEffect, useMemo, useReducer, useState } from "react";
 import { ActionButton } from "@/components/actionButton";
 import { AddWalletButton } from "@/components/addWalletButton";
+import { AddWalletButtonModal } from "@/components/addWalletButtonModal";
 import { DashboardSkeleton } from "@/components/dashboardSkeleton";
 import LoginButton from "@/components/loginButton";
 import { LogoutConfirmButton } from "@/components/logoutConfirmButton";
@@ -335,7 +336,10 @@ export default function Dashboard() {
                   {walletEntries.filter((e) => e.isLinked).length}
                 </p>
               </div>
-              <AddWalletButton />
+              <div className="flex gap-2 flex-wrap items-start">
+                <AddWalletButton />
+                <AddWalletButtonModal />
+              </div>
             </div>
             {walletEntries.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -398,6 +402,7 @@ export default function Dashboard() {
                 Connect a wallet to trade.
               </p>
               <AddWalletButton />
+              <AddWalletButtonModal />
             </div>
           ) : (
             <div className="flex items-center gap-3 flex-wrap">
