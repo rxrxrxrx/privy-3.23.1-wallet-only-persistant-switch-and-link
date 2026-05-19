@@ -4,7 +4,6 @@ import "./globals.css";
 import { DebugPanelLoader } from "@/components/debugPanelLoader";
 import { Providers } from "@/components/providers";
 import { SessionKeepalive } from "@/components/sessionKeepalive";
-import { WalletReattach } from "@/components/walletReattach";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +32,6 @@ export default function RootLayout({
       >
         <Providers>
           <SessionKeepalive />
-          <WalletReattach />
           {children}
           <DebugPanelLoader />
         </Providers>
