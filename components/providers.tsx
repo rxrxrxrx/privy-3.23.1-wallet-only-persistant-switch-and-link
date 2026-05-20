@@ -53,7 +53,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         loginMethods: ["wallet"],
         externalWallets: {
           solana: {
-            connectors: toSolanaWalletConnectors(),
+            connectors: toSolanaWalletConnectors({ shouldAutoConnect: true }),
           },
         },
         embeddedWallets: {
