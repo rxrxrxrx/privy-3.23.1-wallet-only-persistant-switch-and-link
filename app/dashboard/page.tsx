@@ -41,7 +41,11 @@ import { env } from "@/lib/env";
 import { logger } from "@/lib/logger";
 
 export default function Dashboard() {
-  const { user: userData, ready, authenticated } = usePrivy();
+  // Pattern C: no Privy session. We DON'T destructure `authenticated`
+  // because we no longer rely on Privy auth state for any UI gating —
+  // the source of truth is `wallets.length > 0` (= a wallet is attached
+  // via wallet-standard, regardless of Privy session existence).
+  const { user: userData, ready } = usePrivy();
   const { connectWallet } = useConnectWallet();
   const { wallets } = useWallets();
   const { signMessage } = useSignMessage();
@@ -271,13 +275,13 @@ export default function Dashboard() {
           <div>
             <h1 className="text-3xl font-bold text-white">Wallet Dashboard</h1>
             <p className="text-gray-400">
-              {authenticated
+              {wallets.length > 0
                 ? "Manage your wallets and transactions"
                 : "Browse freely. Connect to trade."}
             </p>
           </div>
 
-          {authenticated ? (
+          {wallets.length > 0 ? (
             <LogoutConfirmButton />
           ) : (
             <LoginButton label="Connect wallet" />
@@ -323,8 +327,8 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Wallets section: always visible when authed, even with zero wallets */}
-        {authenticated ? (
+        {/* Wallets section: visible once at least one wallet is attached. */}
+        {wallets.length > 0 ? (
           <div className="space-y-4">
             <div className="flex items-center justify-between flex-wrap gap-3">
               <div>
@@ -369,7 +373,7 @@ export default function Dashboard() {
         {/* Action Buttons */}
         <div className="space-y-4">
           <h2 className="text-2xl font-semibold text-white">Actions</h2>
-          {authenticated && wallets.length > 0 ? (
+          {wallets.length > 0 ? (
             <div className="flex flex-wrap gap-4">
               <ActionButton
                 icon={<MessageSquare className="h-4 w-4" />}
@@ -396,18 +400,10 @@ export default function Dashboard() {
                 }
               />
             </div>
-          ) : authenticated ? (
-            <div className="flex items-center gap-3 flex-wrap">
-              <p className="text-sm text-gray-400">
-                Connect a wallet to trade.
-              </p>
-              <AddWalletButton />
-              <AddWalletButtonModal />
-            </div>
           ) : (
             <div className="flex items-center gap-3 flex-wrap">
               <p className="text-sm text-gray-400">
-                Sign in with your Solana wallet to start trading.
+                Connect your Solana wallet to start trading.
               </p>
               <LoginButton label="Connect to trade" />
             </div>
