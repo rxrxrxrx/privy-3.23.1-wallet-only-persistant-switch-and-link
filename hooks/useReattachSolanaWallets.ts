@@ -33,19 +33,20 @@ import { logger } from "@/lib/logger";
  * allow-list upstream.
  */
 export function useReattachSolanaWallets() {
-  const { ready, authenticated, user } = usePrivy();
+  const { ready } = usePrivy();
   const { wallets } = useWallets();
   const tried = useRef(false);
 
   useEffect(() => {
-    if (!ready || !authenticated || tried.current) return;
+    // Pattern C: no Privy session, so no `authenticated` gate and no
+    // linkedAccounts dependency. We just walk the wallet-standard
+    // registry on page load and force silent:connect on every Solana
+    // wallet so previously-attached wallets re-attach without user
+    // interaction. Phantom/Solflare/Backpack typically auto-reconnect
+    // on their own; this is the safety net for wallets that don't
+    // (TokenPocket extension, mobile in-app browsers).
+    if (!ready || tried.current) return;
     if (wallets.length > 0) return;
-
-    const linkedSolana = (user?.linkedAccounts ?? []).filter(
-      (a) =>
-        a.type === "wallet" && "chainType" in a && a.chainType === "solana",
-    );
-    if (linkedSolana.length === 0) return;
 
     tried.current = true;
 
@@ -71,5 +72,5 @@ export function useReattachSolanaWallets() {
     } catch (err) {
       logger.warn("[reattach] failed to query wallet-standard registry", err);
     }
-  }, [ready, authenticated, user, wallets.length]);
+  }, [ready, wallets.length]);
 }
